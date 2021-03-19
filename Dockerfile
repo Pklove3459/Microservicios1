@@ -6,7 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["MSInventario.csproj", "./"]
-RUN dotnet restore "inventario.csproj"
+RUN dotnet restore "MSInventario.csproj"
 COPY . .
 WORKDIR "/src/"
 RUN dotnet build "MSInventario.csproj" -c Release -o /app/build
