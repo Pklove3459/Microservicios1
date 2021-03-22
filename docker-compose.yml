@@ -9,7 +9,7 @@ services:
         restart: always
         volumes:
             - db_volume_inventario:/var/lib/mysql
-            - ./db/inventario.sql:/docker-entrypoint-initdb.d/inventario.sql:ro
+            - ../db/inventario.sql:/docker-entrypoint-initdb.d/inventario.sql:ro
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
         environment: 
             MYSQL_ROOT_PASSWORD: "root"
@@ -25,7 +25,7 @@ services:
         restart: always
         volumes:
             - db_volume_compras:/var/lib/mysql
-            - ./db/compras.sql:/docker-entrypoint-initdb.d/compras.sql:ro
+            - ../db/compras.sql:/docker-entrypoint-initdb.d/compras.sql:ro
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
         environment: 
             MYSQL_ROOT_PASSWORD: "root"
@@ -41,7 +41,7 @@ services:
         restart: always
         volumes:
             - db_volume_clientes:/var/lib/mysql
-            - ./db/clientes.sql:/docker-entrypoint-initdb.d/clientes.sql:ro
+            - ../db/clientes.sql:/docker-entrypoint-initdb.d/clientes.sql:ro
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
         environment: 
             MYSQL_ROOT_PASSWORD: "root"
