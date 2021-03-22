@@ -1,0 +1,82 @@
+version: '3.9'
+
+services:
+    # Bases de datos
+    mysql_inventario:
+        image: mysql/mysql-server:latest
+        ports:
+            - "3310:3306"
+        restart: always
+        volumes:
+            - db_volume_inventario:/var/lib/mysql
+            - ./db/inventario.sql:/docker-entrypoint-initdb.d/inventario.sql:ro
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
+        environment: 
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_HOST: localhost
+            MYSQL_DATABASE: "inventario"
+            MYSQL_USER: "root"
+        container_name: db_inventario
+
+    mysql_compras:
+        image: mysql/mysql-server:latest
+        ports:
+            - "3311:3306"
+        restart: always
+        volumes:
+            - db_volume_compras:/var/lib/mysql
+            - ./db/compras.sql:/docker-entrypoint-initdb.d/compras.sql:ro
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
+        environment: 
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_HOST: localhost
+            MYSQL_DATABASE: "compras"
+            MYSQL_USER: "root"
+        container_name: db_compras
+
+    mysql_clientes:
+        image: mysql/mysql-server:latest
+        ports:
+            - "3312:3306"
+        restart: always
+        volumes:
+            - db_volume_clientes:/var/lib/mysql
+            - ./db/clientes.sql:/docker-entrypoint-initdb.d/clientes.sql:ro
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
+        environment: 
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_HOST: localhost
+            MYSQL_DATABASE: "clientes"
+            MYSQL_USER: "root"
+        container_name: db_clientes
+
+    # Microservicios
+    # ms_inventario:
+    #     image: ms_inventario_uv
+    #     depends_on: 
+    #         - "mysql_inventario"
+    #     ports:
+    #         - "8090:80"
+    #     build: 
+    #         context: ./MSInventario/
+    #         dockerfile: Dockerfile
+    #     environment: 
+    #         DB_CONNECTION_STRING: "server=mysql_inventario;user=admin;password=admin;database=inventario"
+
+    # API
+    # api_gateway:
+    #     image: api_gateway_uv
+    #     depends_on: 
+    #         - "ms_inventario"
+    #     ports:
+    #         - "5100:80"
+    #     build: 
+    #         context: ./GatewayTienda/
+    #         dockerfile: Dockerfile
+    #     environment: 
+    #         URL_MS_INVENTARIO: "http://localhost:8090"
+
+volumes:
+    db_volume_inventario:
+    db_volume_compras:
+    db_volume_clientes:
