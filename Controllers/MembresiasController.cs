@@ -5,20 +5,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MSClientes.Models;
 
 namespace MSClientes.Controllers
 {
+    
+   
+    
     [Route("[controller]")]
     [ApiController]
     public class MembresiasController : ControllerBase
     {
+
+          private ILogger<MembresiasController> _logger;
+          private clientesContext dbContext;
         public MembresiasController(ILogger<MembresiasController> logger)
         {
             _logger = logger;
             dbContext = new clientesContext();
         }
+         [HttpGet("crear")]
+        public async Task<ActionResult<Membresia>> create([FromBody]Membresia membresia)
+        {   
+            if(membresia == null)
+            {
+               
+                return BadRequest("membresia nula");
+            }
 
-        [HttpGet("actualizar/{id}")]
+            try
+            {
+                dbContext.Entry(membresia).State = EntityState.Added;
+                await dbContext.SaveChangesAsync();
+
+                return Ok(membresia);
+            }
+            catch(Exception excepcion)
+            {        
+                 return BadRequest(excepcion);
+            }
+          
+        }
+
+       
         public async Task<ActionResult<Membresia>> Update(int id, [FromBody]Membresia cambioMembresia)
         {
             if(cambioMembresia == null)
