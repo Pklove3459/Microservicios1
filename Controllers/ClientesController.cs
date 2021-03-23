@@ -18,9 +18,24 @@ namespace MSClientes.Controllers
         private readonly ILogger<ClientesController> log;
 
         [HttpGet("buscar")]
-        public async Task<ActionResult<Cliente>> Search()
+        public async Task<ActionResult<Cliente>> Search([FromQuery]string nombre = "", [FromQuery] int idCliente = -1)
         {
-            return Ok();
+            List<Cliente> clientes = null;
+            
+            clientesContext dbContext = new clientesContext();
+
+            clientes = await dbContext.Clientes
+                .Where(cliente => cliente.Nombre.Contains(nombre))
+                .Where(cliente => (idCliente >= 0 && cliente.Id == idCliente) || 
+                (idCliente < 0 && cliente.Id != idCliente))
+                .ToListAsync();
+
+            if (clientes == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(clientes);
         }
 
          [HttpPost("RegistrarCliente")]
