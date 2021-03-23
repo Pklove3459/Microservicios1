@@ -23,15 +23,16 @@ namespace MSClientes.Controllers
     [ApiController]
     public class MembresiasController : ControllerBase
     {
+        private ILogger<MembresiasController> _logger;
+        private clientesContext dbContext;
 
-          private ILogger<MembresiasController> _logger;
-          private clientesContext dbContext;
         public MembresiasController(ILogger<MembresiasController> logger)
         {
             _logger = logger;
             dbContext = new clientesContext();
         }
-         [HttpGet("crear")]
+        
+        [HttpGet("crear")]
         public async Task<ActionResult<Membresia>> create([FromBody]Membresia membresia)
         {   
             if(membresia == null)
@@ -54,7 +55,7 @@ namespace MSClientes.Controllers
           
         }
 
-       
+        [HttpGet("actualizar/{id}")]
         public async Task<ActionResult<Membresia>> Update(int id, [FromBody]Membresia cambioMembresia)
         {
             if(cambioMembresia == null)
