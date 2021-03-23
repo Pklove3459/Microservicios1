@@ -51,17 +51,41 @@ services:
         container_name: db_clientes
 
     # Microservicios
-    # ms_inventario:
-    #     image: ms_inventario_uv
-    #     depends_on: 
-    #         - "mysql_inventario"
-    #     ports:
-    #         - "8090:80"
-    #     build: 
-    #         context: ./MSInventario/
-    #         dockerfile: Dockerfile
-    #     environment: 
-    #         DB_CONNECTION_STRING: "server=mysql_inventario;user=admin;password=admin;database=inventario"
+    ms_inventario:
+        image: ms_inventario_uv
+        depends_on: 
+            - "mysql_inventario"
+        ports:
+            - "8090:80"
+        build: 
+            context: ../MSInventario/
+            dockerfile: Dockerfile
+        environment: 
+            DB_CONNECTION_STRING: "server=mysql_inventario;user=admin;password=admin;database=inventario"
+
+    ms_compras:
+        image: ms_compras_uv
+        depends_on: 
+            - "mysql_compras"
+        ports:
+            - "8091:80"
+        build: 
+            context: ../MSCompras/
+            dockerfile: Dockerfile
+        environment: 
+            DB_CONNECTION_STRING: "server=mysql_compras;user=admin;password=admin;database=compras"
+
+    ms_clientes:
+        image: ms_clientes_uv
+        depends_on: 
+            - "mysql_clientes"
+        ports:
+            - "8092:80"
+        build: 
+            context: ../MSClientes/
+            dockerfile: Dockerfile
+        environment: 
+            DB_CONNECTION_STRING: "server=mysql_clientes;user=admin;password=admin;database=clientes"
 
     # API
     # api_gateway:
